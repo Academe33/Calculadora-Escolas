@@ -8,33 +8,83 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      padding: 0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 100%;
+      padding: 10px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      width: 100%;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    input {
+      width: 90%;
+      padding: 10px;
+      font-size: 1.1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin: 0 auto;
+      display: block;
     }
     table {
       width: 100%;
+      max-width: 600px;
       border-collapse: collapse;
-      margin-bottom: 20px;
+      margin: 20px auto;
     }
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
       text-align: center;
+      font-size: 1.1em;
     }
     th {
       background-color: #f4f4f4;
-    }
-    input {
-      width: 100%;
-      text-align: center;
-      border: none;
-      background: transparent;
     }
     .total {
       font-weight: bold;
       color: #28a745;
     }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
+    .toggle-btn {
+      margin: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .toggle-btn:hover {
+      background-color: #0056b3;
+    }
+    @media (max-width: 768px) {
+      input {
+        width: 100%;
+      }
+      th, td {
+        font-size: 1em;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
     }
   </style>
 </head>
@@ -44,8 +94,13 @@
   <h1>Calculadora de Comissionamento - Simulação de Cenários</h1>
 
   <!-- Número de alunos -->
-  <label for="numAlunos">Número de Alunos:</label>
-  <input type="number" id="numAlunos" value="400"><br><br>
+  <div class="form-group">
+    <label for="numAlunos">Número de Alunos:</label>
+    <input type="number" id="numAlunos" value="400">
+  </div>
+
+  <!-- Botão para esconder/mostrar coluna -->
+  <button class="toggle-btn" onclick="toggleColumn()">Academe</button>
 
   <table id="scenarioTable">
     <thead>
@@ -54,7 +109,7 @@
         <th>Comissão Escola (%)</th>
         <th>Preço por Aluno (R$)</th>
         <th>Lucro Anual Escola (R$)</th>
-        <th>Lucro Anual Plataforma (R$)</th>
+        <th class="lucroPlataformaHeader">Lucro Anual Plataforma (R$)</th>
       </tr>
     </thead>
     <tbody>
@@ -64,7 +119,7 @@
         <td><input type="number" id="comissaoEscola1" value="20"></td>
         <td><input type="number" id="precoAluno1" value="29.90"></td>
         <td class="total" id="lucroEscola1">R$ 0,00</td>
-        <td class="total" id="lucroPlataforma1">R$ 0,00</td>
+        <td class="total lucroPlataforma">R$ 0,00</td>
       </tr>
 
       <!-- Cenário 2 -->
@@ -73,7 +128,7 @@
         <td><input type="number" id="comissaoEscola2" value="30"></td>
         <td><input type="number" id="precoAluno2" value="29.90"></td>
         <td class="total" id="lucroEscola2">R$ 0,00</td>
-        <td class="total" id="lucroPlataforma2">R$ 0,00</td>
+        <td class="total lucroPlataforma">R$ 0,00</td>
       </tr>
 
       <!-- Cenário 3 -->
@@ -82,7 +137,7 @@
         <td><input type="number" id="comissaoEscola3" value="40"></td>
         <td><input type="number" id="precoAluno3" value="29.90"></td>
         <td class="total" id="lucroEscola3">R$ 0,00</td>
-        <td class="total" id="lucroPlataforma3">R$ 0,00</td>
+        <td class="total lucroPlataforma">R$ 0,00</td>
       </tr>
     </tbody>
   </table>
@@ -91,8 +146,6 @@
 <script>
   function calcularLucros() {
     const numAlunos = parseFloat(document.getElementById('numAlunos').value);
-
-    // Preço padrão por aluno
     const meses = 12;
 
     // Cenário 1
@@ -102,7 +155,7 @@
     let valorPlataforma1 = precoAluno1 - valorEscola1;
 
     document.getElementById('lucroEscola1').textContent = 'R$ ' + (valorEscola1 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
-    document.getElementById('lucroPlataforma1').textContent = 'R$ ' + (valorPlataforma1 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.querySelectorAll('.lucroPlataforma')[0].textContent = 'R$ ' + (valorPlataforma1 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
     // Cenário 2
     let comissaoEscola2 = parseFloat(document.getElementById('comissaoEscola2').value) / 100;
@@ -111,7 +164,7 @@
     let valorPlataforma2 = precoAluno2 - valorEscola2;
 
     document.getElementById('lucroEscola2').textContent = 'R$ ' + (valorEscola2 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
-    document.getElementById('lucroPlataforma2').textContent = 'R$ ' + (valorPlataforma2 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.querySelectorAll('.lucroPlataforma')[1].textContent = 'R$ ' + (valorPlataforma2 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
 
     // Cenário 3
     let comissaoEscola3 = parseFloat(document.getElementById('comissaoEscola3').value) / 100;
@@ -120,7 +173,7 @@
     let valorPlataforma3 = precoAluno3 - valorEscola3;
 
     document.getElementById('lucroEscola3').textContent = 'R$ ' + (valorEscola3 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
-    document.getElementById('lucroPlataforma3').textContent = 'R$ ' + (valorPlataforma3 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.querySelectorAll('.lucroPlataforma')[2].textContent = 'R$ ' + (valorPlataforma3 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
   }
 
   document.querySelectorAll('input').forEach(input => {
@@ -128,6 +181,17 @@
   });
 
   calcularLucros(); // Call initially to calculate results
+
+  function toggleColumn() {
+    const platformCols = document.querySelectorAll('.lucroPlataforma, .lucroPlataformaHeader');
+    platformCols.forEach(col => {
+      if (col.style.display === 'none') {
+        col.style.display = '';
+      } else {
+        col.style.display = 'none';
+      }
+    });
+  }
 </script>
 
 </body>
