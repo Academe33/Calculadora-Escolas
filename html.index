@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Comissionamento Escolar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    input {
+      width: 100%;
+      text-align: center;
+      border: none;
+      background: transparent;
+    }
+    .total {
+      font-weight: bold;
+      color: #28a745;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Calculadora de Comissionamento - Simulação de Cenários</h1>
+
+  <!-- Número de alunos -->
+  <label for="numAlunos">Número de Alunos:</label>
+  <input type="number" id="numAlunos" value="400"><br><br>
+
+  <table id="scenarioTable">
+    <thead>
+      <tr>
+        <th>Cenário</th>
+        <th>Comissão Escola (%)</th>
+        <th>Preço por Aluno (R$)</th>
+        <th>Lucro Anual Escola (R$)</th>
+        <th>Lucro Anual Plataforma (R$)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Cenário 1 -->
+      <tr>
+        <td>Cenário 1</td>
+        <td><input type="number" id="comissaoEscola1" value="20"></td>
+        <td><input type="number" id="precoAluno1" value="29.90"></td>
+        <td class="total" id="lucroEscola1">R$ 0,00</td>
+        <td class="total" id="lucroPlataforma1">R$ 0,00</td>
+      </tr>
+
+      <!-- Cenário 2 -->
+      <tr>
+        <td>Cenário 2</td>
+        <td><input type="number" id="comissaoEscola2" value="30"></td>
+        <td><input type="number" id="precoAluno2" value="29.90"></td>
+        <td class="total" id="lucroEscola2">R$ 0,00</td>
+        <td class="total" id="lucroPlataforma2">R$ 0,00</td>
+      </tr>
+
+      <!-- Cenário 3 -->
+      <tr>
+        <td>Cenário 3</td>
+        <td><input type="number" id="comissaoEscola3" value="40"></td>
+        <td><input type="number" id="precoAluno3" value="29.90"></td>
+        <td class="total" id="lucroEscola3">R$ 0,00</td>
+        <td class="total" id="lucroPlataforma3">R$ 0,00</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function calcularLucros() {
+    const numAlunos = parseFloat(document.getElementById('numAlunos').value);
+
+    // Preço padrão por aluno
+    const meses = 12;
+
+    // Cenário 1
+    let comissaoEscola1 = parseFloat(document.getElementById('comissaoEscola1').value) / 100;
+    let precoAluno1 = parseFloat(document.getElementById('precoAluno1').value);
+    let valorEscola1 = precoAluno1 * comissaoEscola1;
+    let valorPlataforma1 = precoAluno1 - valorEscola1;
+
+    document.getElementById('lucroEscola1').textContent = 'R$ ' + (valorEscola1 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.getElementById('lucroPlataforma1').textContent = 'R$ ' + (valorPlataforma1 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+    // Cenário 2
+    let comissaoEscola2 = parseFloat(document.getElementById('comissaoEscola2').value) / 100;
+    let precoAluno2 = parseFloat(document.getElementById('precoAluno2').value);
+    let valorEscola2 = precoAluno2 * comissaoEscola2;
+    let valorPlataforma2 = precoAluno2 - valorEscola2;
+
+    document.getElementById('lucroEscola2').textContent = 'R$ ' + (valorEscola2 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.getElementById('lucroPlataforma2').textContent = 'R$ ' + (valorPlataforma2 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+
+    // Cenário 3
+    let comissaoEscola3 = parseFloat(document.getElementById('comissaoEscola3').value) / 100;
+    let precoAluno3 = parseFloat(document.getElementById('precoAluno3').value);
+    let valorEscola3 = precoAluno3 * comissaoEscola3;
+    let valorPlataforma3 = precoAluno3 - valorEscola3;
+
+    document.getElementById('lucroEscola3').textContent = 'R$ ' + (valorEscola3 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+    document.getElementById('lucroPlataforma3').textContent = 'R$ ' + (valorPlataforma3 * numAlunos * meses).toLocaleString('pt-BR', {minimumFractionDigits: 2});
+  }
+
+  document.querySelectorAll('input').forEach(input => {
+    input.addEventListener('input', calcularLucros);
+  });
+
+  calcularLucros(); // Call initially to calculate results
+</script>
+
+</body>
+</html>
